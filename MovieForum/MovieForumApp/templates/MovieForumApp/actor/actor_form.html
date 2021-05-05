@@ -1,0 +1,233 @@
+{% load static %}
+<head>
+	<title>Open Pediatrics</title>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+	<link rel="stylesheet" href="{% static 'Movie/css/plugins.css' %}">
+	<link rel="stylesheet" href="{% static 'Movie/css/style.css' %}">
+</head>
+<body>
+<!--login form popup-->
+<div class="login-wrapper" id="login-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Login</h3>
+		<form method="POST" action="{% url 'login' %}">
+			{% csrf_token %}
+        	<div class="row">
+        		 <label for="username">
+                    Username:
+                    <input type="text" name="username" id="username" placeholder="Hugh Jackman"/>
+                </label>
+        	</div>
+            <div class="row">
+            	<label for="password">
+                    Password:
+                    <input type="password" name="password" id="password" placeholder="******"/>
+                </label>
+            </div>
+           <div class="row">
+           	 <button type="submit">Login</button>
+           </div>
+        </form>
+    </div>
+</div>
+<div class="login-wrapper"  id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Register</h3>
+        <form method="post" action="{% url 'register' %}">
+			{% csrf_token %}
+            <div class="row">
+                 <label for="username-2">
+                    Username:
+                    <input type="text" name="username" id="username-2" placeholder="Username"/>
+                </label>
+				<label for="username-2">
+                    First Name:
+                    <input type="text" name="first_name" id="first_name" placeholder="Hugh"/>
+                </label>
+				<label for="username-2">
+                    Last Name:
+                    <input type="text" name="last_name" id="last_name" placeholder="Jackman"/>
+                </label>
+            </div>
+            <div class="row">
+                <label for="email-2">
+                    your email:
+                    <input type="text" name="email"/>
+                </label>
+            </div>
+             <div class="row">
+                <label for="password-2">
+                    Password:
+                    <input type="password" name="password1"/>
+                </label>
+            </div>
+             <div class="row">
+                <label for="repassword-2">
+                    re-type Password:
+                    <input type="password" name="password2"/>
+                </label>
+            </div>
+           <div class="row">
+             <button type="submit">sign up</button>
+           </div>
+        </form>
+    </div>
+</div>
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-left">
+						<li class="dropdown first">
+							<a class="btn btn-default" href="{% url 'dashboard' %}">Home</a>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'movies' %}">Movie list</a></li>
+								<li><a href="{% url 'createMovie' %}">Create movie</a></li>
+								<li><a href="{% url 'createGenre' %}">Add a new genre</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Actors<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'actors' %}">Actor list</a></li>
+								<li><a href="{% url 'createActor' %}">Create actor</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Producers<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'producers' %}">Producer list</a></li>
+								<li><a href="{% url 'createProducer' %}">Create producer</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Directors<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'directors' %}">Director list</a></li>
+								<li><a href="{% url 'createDirector' %}">Create Director</a></li>
+							</ul>
+						</li>
+					</ul>
+					{% if not user.is_authenticated %}
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<li class="loginLink"><a href="{% url 'login' %}">Log In</a></li>
+						<li class="btn signupLink"><a href="#">Register</a></li>
+					</ul>
+					{% else %}
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<h4 style="color:yellow">Hello, {{ user }}!</h4>
+						<li><a href="{% url 'profile' %}">Profile</a></li>
+						<li><a href="{% url 'logout' %}">Log Out</a></li>
+					</ul>
+					{% endif %}
+				</div>
+	    </nav>
+	</div>
+</header>
+<div class="hero user-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-single">
+	<div class="container">
+		<div class="row ipad-width">
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<div class="form-style-1 user-pro" action="#">
+					<form enctype="multipart/form-data" action="{% url 'createActor' %}" class="user" method="post">
+						{% csrf_token %}
+						<h4>Add a new actor</h4>
+						<div class="row">
+							<div class="col-sm-4 form-it">
+								<label>First Name</label>
+								{{ form.fname }}
+							</div>
+							<div class="col-sm-4 form-it">
+								<label>Middle Name</label>
+								{{ form.mname }}
+							</div>
+							<div class="col-sm-4 form-it">
+								<label>Last Name</label>
+								{{ form.lname }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4 form-it">
+							<label>Date of Birth</label>
+							{{ form.date_of_birth }}
+							</div>
+							<div class="col-sm-4 form-it">
+							<label>Gender</label>
+							{{ form.gender }}
+							</div>
+							<div class="col-sm-4 form-it">
+							<label>Country</label>
+							{{ form.country_name }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4 form-it">
+								<label>Instagram profile</label>
+								{{ form.instagram }}
+							</div>
+							<div class="col-sm-4 form-it">
+								<label>Twitter profile</label>
+								{{ form.twitter }}
+							</div>
+							<div class="col-sm-4 form-it">
+								<label>LinkedIn profile</label>
+								{{ form.linkedin }}
+							</div>
+						</div>
+						<div class="row">
+							<label>Description</label>
+							{{ form.description }}
+						</div>
+						<div class="row">
+							<label>Movies acted in</label>
+							{{ form.movies }}
+						</div>
+						<div class="row">
+							<label>Picture</label>
+							{{ form.image }}
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								{% if is_create %}
+								<br>
+								<input class="submit" type="submit" value="Add">
+								{% elif is_update %}
+								<br>
+								<input class="submit" type="submit" value="Edit">
+								{% endif %}
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{% static 'Movie/js/jquery.js' %}"></script>
+<script src="{% static 'Movie/js/plugins.js' %}"></script>
+<script src="{% static 'Movie/js/plugins2.js' %}"></script>
+<script src="{% static 'Movie/js/custom.js' %}"></script>

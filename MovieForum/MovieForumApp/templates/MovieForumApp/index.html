@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+	<title>Open Pediatrics</title>
+	<meta charset="UTF-8">
+	<link rel="profile" href="#">
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+    <link rel="stylesheet" href="{% static 'Movie/css/plugins.css' %}">
+    <link rel="stylesheet" href="{% static 'Movie/css/style.css' %}">
+</head>
+<body>
+<div class="landing-hero">
+	<img src="{% static 'images/logo.png' %}" width="50%" height="50%" alt="Logo">
+	<div class="row landing-hero-text">
+		<h2>BIL 372</h2>
+		<h2 style="color: #F08A20; font-weight: bolder">PROJE  &middot;  FILM VERİTABANI & FORUMU</h2>
+		<h2>Alper Kaan YILDIZ</h2>
+		<h2>Ege TAN</h2>
+		<h2>Salih SERT</h2>
+	</div>
+	<a href="{% url 'dashboard' %}" class="redbtn">START HERE</a>
+</div>
+<script src="{% static 'Movie/js/jquery.js' %}"></script>
+<script src="{% static 'Movie/js/plugins.js' %}"></script>
+<script src="{% static 'Movie/js/plugins2.js' %}"></script>
+<script src="{% static 'Movie/js/custom.js' %}"></script>
+</body>
+</html>

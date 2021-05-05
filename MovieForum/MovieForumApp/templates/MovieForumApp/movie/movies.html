@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+	<meta charset="UTF-8">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+	<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<link rel="stylesheet" href="{% static 'Movie/css/plugins.css' %}">
+	<link rel="stylesheet" href="{% static 'Movie/css/style.css' %}">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+<!--login form popup-->
+<div class="login-wrapper" id="login-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Login</h3>
+		<form method="POST" action="{% url 'login' %}">
+			{% csrf_token %}
+        	<div class="row">
+        		 <label for="username">
+                    Username:
+                    <input type="text" name="username" id="username" placeholder="Hugh Jackman"/>
+                </label>
+        	</div>
+            <div class="row">
+            	<label for="password">
+                    Password:
+                    <input type="password" name="password" id="password" placeholder="******"/>
+                </label>
+            </div>
+           <div class="row">
+           	 <button type="submit">Login</button>
+           </div>
+        </form>
+    </div>
+</div>
+<div class="login-wrapper"  id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Register</h3>
+        <form method="post" action="{% url 'register' %}">
+			{% csrf_token %}
+            <div class="row">
+				<label for="username-2">
+                    Username:
+                    <input type="text" name="username" id="username-2" placeholder="Username"/>
+                </label>
+				<label for="username-2">
+                    First Name:
+                    <input type="text" name="first_name" id="first_name" placeholder="Hugh"/>
+                </label>
+				<label for="username-2">
+                    Last Name:
+                    <input type="text" name="last_name" id="last_name" placeholder="Jackman"/>
+                </label>
+            </div>
+            <div class="row">
+                <label for="email-2">
+                    your email:
+                    <input type="text" name="email"/>
+                </label>
+            </div>
+             <div class="row">
+                <label for="password-2">
+                    Password:
+                    <input type="password" name="password1"/>
+                </label>
+            </div>
+             <div class="row">
+                <label for="repassword-2">
+                    re-type Password:
+                    <input type="password" name="password2"/>
+                </label>
+            </div>
+           <div class="row">
+             <button type="submit">sign up</button>
+           </div>
+        </form>
+    </div>
+</div>
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-left">
+						<li class="dropdown first">
+							<a class="btn btn-default" href="{% url 'dashboard' %}">Home</a>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'movies' %}">Movie list</a></li>
+								<li><a href="{% url 'createMovie' %}">Create movie</a></li>
+								<li><a href="{% url 'createGenre' %}">Add a new genre</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Actors<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'actors' %}">Actor list</a></li>
+								<li><a href="{% url 'createActor' %}">Create actor</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Producers<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'producers' %}">Producer list</a></li>
+								<li><a href="{% url 'createProducer' %}">Create producer</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Directors<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'directors' %}">Director list</a></li>
+								<li><a href="{% url 'createDirector' %}">Create Director</a></li>
+							</ul>
+						</li>
+					</ul>
+					{% if not user.is_authenticated %}
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<li class="loginLink"><a href="{% url 'login' %}">Log In</a></li>
+						<li class="btn signupLink"><a href="#">Register</a></li>
+					</ul>
+					{% else %}
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<h4 style="color:yellow">Hello, {{ user }}!</h4>
+						<li><a href="{% url 'profile' %}">Profile</a></li>
+						<li><a href="{% url 'logout' %}">Log Out</a></li>
+					</ul>
+					{% endif %}
+				</div>
+	    </nav>
+		<div class="top-search">
+	    	<select>
+				<option value="united">Movie</option>
+			</select>
+			<input type="text" name="movie_name" id="movie_name" placeholder="Search for a movie. Movie suggestions will popup as you type.">
+	    </div>
+	</div>
+</header>
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1>Movies</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+						<li> <span class="ion-ios-arrow-right"></span>movies</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-single">
+	<div class="container">
+		<div class="row ipad-width">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="flex-wrap-movielist">
+					{% for movie, average_rating in movies %}
+						<div class="movie-item-style-2 movie-item-style-1">
+							{% if movie.image %}
+							<img src="{{ movie.image.url }}" alt="">
+							{% endif %}
+							<div class="hvr-inner">
+								<a  href="{% url 'movie' movie.movie_id %}"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+							</div>
+							<div class="mv-item-infor">
+								<h6><a href="#">{{ movie.title }}</a></h6>
+								<p class="rate"><i class="ion-android-star"></i><span>{{ average_rating.numeric_rating__avg }}</span> /10</p>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<div class="sidebar">
+					<div class="searh-form">
+						<h4 class="sb-title">Filter movies</h4>
+						<form class="form-style-1" action="{% url 'searchedMovies' %}">
+							<div class="row">
+								<div class="col-md-12 form-it">
+									<label>Genres</label>
+									<div class="group-ip">
+										<select
+											name="genres" multiple="" class="ui fluid dropdown">
+											<option value="">Select genres</option>
+											{% for genre in genres %}
+											<option value="{{ genre }}">{{ genre }}</option>
+											{% endfor %}
+										</select>
+									</div>	
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Release Year</label>
+									<div class="row">
+										<div class="col-md-6">
+											<input name="from_year" type="text" placeholder="From year ...">
+										</div>
+										<div class="col-md-6">
+											<input name="to_year" type="text" placeholder="To year ...">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 ">
+									<input class="submit" type="submit" value="submit">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{% static 'Movie/js/jquery.js' %}"></script>
+<script src="{% static 'Movie/js/plugins.js' %}"></script>
+<script src="{% static 'Movie/js/plugins2.js' %}"></script>
+<script src="{% static 'Movie/js/custom.js' %}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+	$('#movie_name').autocomplete({
+		select: function(event, ui) {
+			movie_name = ui.item.value;
+			$.ajax({
+				data: {
+					movie_name: movie_name
+				},
+				type: "get",
+				url: "http://127.0.0.1:8000/singleMovieSearchResult",
+				dataType: "json",
+				success: function(data){
+					pk = data[0]['pk'];
+					window.location.replace("http://127.0.0.1:8000/movie/" + pk + "/");
+				}
+			});
+	}});
+	$(document).ready(function(){
+		var movieTitles = []
+        $.ajax({
+            type: "get",
+            url: "http://127.0.0.1:8000/allMoviesJson",
+            dataType: "json",
+            success: function(data){
+				data.forEach(myFunction);
+				function myFunction(value) {
+				  var title = value['fields']['title'];
+				  movieTitles.push(title);
+				}
+				$( "#movie_name" ).autocomplete({
+      			source: movieTitles
+    			});
+            },
+        });
+    });
+</script>
+</body>
+</html>

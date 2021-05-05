@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+	<title>Open Pediatrics</title>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+	<link rel="stylesheet" href="{% static 'Movie/css/plugins.css' %}">
+	<link rel="stylesheet" href="{% static 'Movie/css/style.css' %}">
+</head>
+<body>
+<!--login form popup-->
+<div class="login-wrapper" id="login-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Login</h3>
+		<form method="POST" action="{% url 'login' %}">
+			{% csrf_token %}
+        	<div class="row">
+        		 <label for="username">
+                    Username:
+                    <input type="text" name="username" id="username" placeholder="Hugh Jackman"/>
+                </label>
+        	</div>
+            <div class="row">
+            	<label for="password">
+                    Password:
+                    <input type="password" name="password" id="password" placeholder="******"/>
+                </label>
+            </div>
+           <div class="row">
+           	 <button type="submit">Login</button>
+           </div>
+        </form>
+    </div>
+</div>
+<div class="login-wrapper"  id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Register</h3>
+        <form method="post" action="{% url 'register' %}">
+			{% csrf_token %}
+            <div class="row">
+                 <label for="username-2">
+                    Username:
+                    <input type="text" name="username" id="username-2" placeholder="Username"/>
+                </label>
+				<label for="username-2">
+                    First Name:
+                    <input type="text" name="first_name" id="first_name" placeholder="Hugh"/>
+                </label>
+				<label for="username-2">
+                    Last Name:
+                    <input type="text" name="last_name" id="last_name" placeholder="Jackman"/>
+                </label>
+            </div>
+            <div class="row">
+                <label for="email-2">
+                    your email:
+                    <input type="text" name="email"/>
+                </label>
+            </div>
+             <div class="row">
+                <label for="password-2">
+                    Password:
+                    <input type="password" name="password1"/>
+                </label>
+            </div>
+             <div class="row">
+                <label for="repassword-2">
+                    re-type Password:
+                    <input type="password" name="password2"/>
+                </label>
+            </div>
+           <div class="row">
+             <button type="submit">sign up</button>
+           </div>
+        </form>
+    </div>
+</div>
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-left">
+						<li class="dropdown first">
+							<a class="btn btn-default" href="{% url 'dashboard' %}">Home</a>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'movies' %}">Movie list</a></li>
+								<li><a href="{% url 'createMovie' %}">Create movie</a></li>
+								<li><a href="{% url 'createGenre' %}">Add a new genre</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Actors<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'actors' %}">Actor list</a></li>
+								<li><a href="{% url 'createActor' %}">Create actor</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Producers<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'producers' %}">Producer list</a></li>
+								<li><a href="{% url 'createProducer' %}">Create producer</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Directors<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="{% url 'directors' %}">Director list</a></li>
+								<li><a href="{% url 'createDirector' %}">Create Director</a></li>
+							</ul>
+						</li>
+					</ul>
+					{% if not user.is_authenticated %}
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<li class="loginLink"><a href="{% url 'login' %}">Log In</a></li>
+						<li class="btn signupLink"><a href="#">Register</a></li>
+					</ul>
+					{% else %}
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<h4 style="color:yellow">Hello, {{ user }}!</h4>
+						<li><a href="{% url 'profile' %}">Profile</a></li>
+						<li><a href="{% url 'logout' %}">Log Out</a></li>
+					</ul>
+					{% endif %}
+				</div>
+	    </nav>
+	</div>
+</header>
+<div class="hero mv-single-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-single movie-single movie_single">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="movie-img sticky-sb">
+					<img src="{{ movie.image.url }}" alt="">
+					<div class="movie-btn">	
+						<div class="btn-transform transform-vertical red">
+							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
+							<div><a href="{{ movie.trailer }}" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct main-content">
+					<h1 class="bd-hd">{{ movie.title }} <span>{{ movie.date_of_release }}</span></h1>
+					<div class="social-btn">
+						{% if favorite %}
+						<a href="{% url 'unfavoriteMovie' movie.movie_id %}" class="parent-btn"><i class="ion-heart-broken"></i>Unfavorite?</a>
+						{% else %}
+						<a href="{% url 'favoriteMovie' movie.movie_id %}" class="parent-btn"><i class="ion-heart"></i> Add to Favorites</a>
+						{% endif %}
+					</div>
+					<div class="movie-rate">
+						<div class="rate">
+							<i class="ion-android-star"></i>
+							<p><span>{{ avg_rating.numeric_rating__avg }}</span> /10<br>
+								<span class="rv">{{ rating_count }} Ratings</span>
+							</p>
+						</div>
+						{% if user.is_authenticated %}
+						<div class="rate-star">
+							{% if rating %}
+								<p>Your Rating:  </p>
+							{% else %}
+								<p>Rate This Movie:  </p>
+							{% endif %}
+							<div class="rating rating2">
+								{% if rating %}
+								{% for i in score %}
+								<i class="ion-ios-star"></i>
+
+								{% endfor %}
+								{% else %}
+								<a href="{% url 'rateMovie' movie.movie_id 1 %}" title="Give 1 stars" data-value="1"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 2 %}" title="Give 2 stars"  data-value="2"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 3 %}" title="Give 3 stars"  data-value="3"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 4 %}" title="Give 4 stars"  data-value="4"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 5 %}" title="Give 5 stars"  data-value="5"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 6 %}" title="Give 6 stars"  data-value="6"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 7 %}" title="Give 7 stars"  data-value="7"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 8 %}" title="Give 8 stars" data-value="8"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 9 %}" title="Give 9 stars" data-value="9"><i class="ion-ios-star"></i></a>
+								<a href="{% url 'rateMovie' movie.movie_id 10 %}" title="Give 10 star" data-value="10"><i class="ion-ios-star"></i></a>
+								{% endif %}
+							</div>
+						</div>
+						{% endif %}
+					</div>
+					<div class="movie-tabs">
+						<div class="tabs">
+							<ul class="tab-links tabs-mv">
+								<li class="active"><a href="#overview">Overview</a></li>
+								<li><a href="#reviews"> Reviews</a></li>
+								<li><a href="#cast">  Cast & Crew </a></li>
+							</ul>
+						    <div class="tab-content">
+						        <div id="overview" class="tab active">
+						            <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+						            		<p>{{ movie.description }}</p>
+											<div class="title-hd-sm">
+												<h4>cast</h4>
+											</div>
+											<!-- movie cast -->
+											<div class="mvcast-item">
+												{% for actor in actors %}
+												<div class="cast-it">
+													<div class="cast-left">
+														<img src="{{ actor.image.url }}">
+														<a href="{% url 'actor' actor.actor_id %}">
+															{{ actor.fname }}
+															{% if actor.mname %}
+																{{ actor.mname }}
+															{% endif %}
+															{{ actor.lname }}
+														</a>
+													</div>
+												</div>
+												{% endfor %}
+											</div>
+											{% if single_comment %}
+											<div class="mv-user-review-item">
+												<h3>{{ user.username }}</h3>
+
+												<p class="time">
+													{{ single_comment.creation_date }}
+												</p>
+												<p>{{ single_comment.content }}</p>
+											</div>
+											{% endif %}
+						            	</div>
+						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		<div class="sb-it">
+						            			<h6>Director: </h6>
+						            			<p>
+													{% if star_director %}
+														<a href="{% url 'director' star_director.director_id %}">
+															{{ star_director.fname }}
+															{% if star_director.mname %}
+																{{ star_director.mname }}
+															{% endif %}
+															{{ star_director.lname }}
+														</a>
+													{% endif %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Stars: </h6>
+						            			<p>
+													{% for actor in actors|slice:"0:2" %}
+													<a href="{% url 'actor' actor.actor_id %}">
+														{{ actor.fname }}
+														{% if actor.mname %}
+															{{ actor.mname }}
+														{% endif %}
+														{{ actor.lname }},
+													</a>
+													{% endfor %}
+												</p>
+
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Genres:</h6>
+						            			<p>
+													{% for genre in genres%}
+														<a href="#">{{ genre.name }}, </a>
+													{% endfor %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Release Date:</h6>
+						            			<p>{{ movie.date_of_release }}</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Run Time:</h6>
+						            			<p>141 min</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Plot Keywords:</h6>
+						            			<p class="tags">
+													{% for keyword in movie.plot_keywords %}
+						            				<span class="time"><a href="#">{{ keyword }}</a></span>
+													{% endfor %}
+						            			</p>
+						            		</div>
+						            	</div>
+						            </div>
+						        </div>
+						        <div id="reviews" class="tab review">
+						           <div class="row">
+						            	<div class="rv-hd">
+						            		<div class="div">
+							            		<h3>Reviews written to</h3>
+						       	 				<h2>{{ movie.title }}</h2>
+							            	</div>
+						            	</div>
+						            	<div class="topbar-filter">
+											<p>Found <span>{{ comment_count }} reviews</span> in total</p>
+										</div>
+									   {% for comment, auth_user in users_and_comments %}
+											<div class="cmt-item flex-it">
+												<div class="author-infor">
+													<div class="flex-it2">
+														<h4 style="color: #0ea432">
+															{{ auth_user.username }}
+														</h4>
+														<span class="time">{{ comment.0.creation_date }}</span>
+													</div>
+														<p style="color: white; font-size: 20px">{{ comment.0.content }}</p>
+												</div>
+												<div class="cmt-item flex-it"
+													 style="margin-left: 50px;
+													 background-color: black;">
+												{% for reply in comment.1 %}
+												<div class="author-infor" style="border: 3px; border-style: solid; border-color: red">
+													<div class="flex-it2">
+														<h4 style="color: blue">
+															{{ reply.user_id_user.username }}
+														</h4>
+														<span class="time">{{ reply.creation_date }}</span>
+													</div>
+														<p style="color: white; font-size: 15px">{{ reply.content }}</p>
+													<br>
+												</div>
+												{% endfor %}
+											   <div class="user-info">
+												{% if user.is_authenticated %}
+													<form action="{% url 'createReply' comment.0.comment_id %}" method="post">
+														{% csrf_token %}
+														<textarea name="reply" id="reply_id" cols="30" rows="100" placeholder="Make a reply." style="color: white; background-color: #0b1a2a; width:750px; height: 80px"></textarea>
+														<button class="redbtn" type="submit">Reply</button>
+													</form>
+												{% endif %}
+										   </div>
+											</div>
+											</div>
+									   {% endfor %}
+									   <div class="mv-user-review-item">
+										   <div class="user-info">
+												{% if user.is_authenticated %}
+													<form action="{% url 'createComment' movie.movie_id %}" method="post">
+														{% csrf_token %}
+														<textarea name="comment" id="comment_id" cols="30" rows="100" placeholder="Share Your Thoughts" style="color: white; background-color: #0b1a2a; width:750px; height: 80px"></textarea>
+														<br>
+														<button class="redbtn" type="submit">Comment</button>
+													</form>
+												{% endif %}
+										   </div>
+									   </div>
+								   </div>
+						        <div id="cast" class="tab">
+						        	<div class="row">
+						            	<h3>Cast & Crew of</h3>
+					       	 			<h2>{{ movie.title }}</h2>
+					       	 			<div class="title-hd-sm">
+											<h4>Directors</h4>
+										</div>
+										<div class="mvcast-item">
+											{% for director, initials in directors_and_initials %}
+											<div class="cast-it">
+												<div class="cast-left">
+													<h4>{{ initials }}</h4>
+													<a href="{% url 'director' director.director_id %}">
+														{{ director.fname }}
+														{% if director.mname %}
+															{{ director.mname }}
+														{% endif %}
+														{{ director.lname }}
+													</a>
+												</div>
+											</div>
+											{% endfor %}
+										</div>
+
+										<div class="title-hd-sm">
+											<h4>Cast</h4>
+										</div>
+										<div class="mvcast-item">											
+											{% for actor in actors %}
+												<div class="cast-it">
+													<div class="cast-left">
+														<img src="{{ actor.image.url }}" alt="">
+														<a href="{% url 'actor' actor.actor_id %}">
+															{{ actor.fname }}
+															{% if actor.mname %}
+																{{ actor.mname }}
+															{% endif %}
+															{{ actor.lname }}
+														</a>
+													</div>
+												</div>
+												{% endfor %}
+										</div>
+										<!-- //== -->
+										<div class="title-hd-sm">
+											<h4>Produced by</h4>
+										</div>
+										<div class="mvcast-item">
+											{% for producer, initials in producers_and_initials %}
+											<div class="cast-it">
+												<div class="cast-left">
+													<h4>{{ initials }}</h4>
+													<a href="{% url 'producer' producer.producer_id %}">
+														{{ producer.fname }}
+														{% if producer.mname %}
+															{{ producer.mname }}
+														{% endif %}
+														{{ producer.lname }}
+													</a>
+												</div>
+											</div>
+											{% endfor %}
+										</div>
+						            </div>
+					       	 	</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{% static 'Movie/js/jquery.js' %}"></script>
+<script src="{% static 'Movie/js/plugins.js' %}"></script>
+<script src="{% static 'Movie/js/plugins2.js' %}"></script>
+<script src="{% static 'Movie/js/custom.js' %}"></script>
+</body>
+
+</html>
